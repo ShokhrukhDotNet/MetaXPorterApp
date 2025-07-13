@@ -417,3 +417,4 @@ FodyWeavers.xsd
 *.msm
 *.msp
 /MetaXPorterApp.Web/appsettings.Development.json
+/MetaXPorterApp.Web/appsettings.Development.json

@@ -75,6 +75,7 @@ namespace MetaXPorterApp.Web
 
         private static void AddFoundationServices(IServiceCollection services)
         {
+            services.AddTransient<IExternalPersonPetInputService, ExternalPersonPetInputService>();
             services.AddTransient<IExternalPersonPetService, ExternalPersonPetService>();
             services.AddTransient<IExternalPersonPetEventService, ExternalPersonPetEventService>();
             services.AddTransient<IPersonService, PersonService>();
@@ -84,6 +85,7 @@ namespace MetaXPorterApp.Web
 
         private static void AddProcessingServices(IServiceCollection services)
         {
+            services.AddTransient<IExternalPersonPetInputProcessingService, ExternalPersonPetInputProcessingService>();
             services.AddTransient<IExternalPersonPetProcessingService, ExternalPersonPetProcessingService>();
             services.AddTransient<IExternalPersonPetEventProcessingService, ExternalPersonPetEventProcessingService>();
             services.AddTransient<IPersonProcessingService, PersonProcessingService>();
