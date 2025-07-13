@@ -28,4 +28,12 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MetaXPorterApp.Web\MetaXPorterApp.Web.csproj" />
+  </ItemGroup>
+
 </Project>

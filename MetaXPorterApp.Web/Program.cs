@@ -1,4 +1,24 @@
+//==================================================
+// Copyright (c) Coalition of Good-Hearted Engineers
+// Free To Use For Reliable File Conversion
+//==================================================
+
+using System.Text.Json.Serialization;
+using MetaXPorterApp.Web.Brokers.Loggings;
+using MetaXPorterApp.Web.Brokers.Queues;
+using MetaXPorterApp.Web.Brokers.Sheets;
+using MetaXPorterApp.Web.Brokers.Storages;
 using MetaXPorterApp.Web.Components;
+using MetaXPorterApp.Web.Services.Coordinations;
+using MetaXPorterApp.Web.Services.Foundations.ExternalPersonPets;
+using MetaXPorterApp.Web.Services.Foundations.Persons;
+using MetaXPorterApp.Web.Services.Foundations.Pets;
+using MetaXPorterApp.Web.Services.Orchestrations.ExternalPersonPets;
+using MetaXPorterApp.Web.Services.Orchestrations.PersonPets;
+using MetaXPorterApp.Web.Services.Orchestrations.Persons;
+using MetaXPorterApp.Web.Services.Processings.ExternalPersonPets;
+using MetaXPorterApp.Web.Services.Processings.Persons;
+using MetaXPorterApp.Web.Services.Processings.Pets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -14,6 +34,16 @@ namespace MetaXPorterApp.Web
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
+
+            builder.Services.AddControllers().AddJsonOptions(options =>
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+            builder.Services.AddDbContext<StorageBroker>();
+            AddBrokers(builder.Services);
+            AddFoundationServices(builder.Services);
+            AddProcessingServices(builder.Services);
+            AddOrchestrationServices(builder.Services);
+            AddCoordinationServices(builder.Services);
 
             var app = builder.Build();
 
@@ -34,5 +64,42 @@ namespace MetaXPorterApp.Web
 
             app.Run();
         }
+
+        private static void AddBrokers(IServiceCollection services)
+        {
+            services.AddTransient<IStorageBroker, StorageBroker>();
+            services.AddTransient<ILoggingBroker, LoggingBroker>();
+            services.AddTransient<ISheetBroker, SheetBroker>();
+            services.AddTransient<IQueueBroker, QueueBroker>();
+        }
+
+        private static void AddFoundationServices(IServiceCollection services)
+        {
+            services.AddTransient<IExternalPersonPetService, ExternalPersonPetService>();
+            services.AddTransient<IExternalPersonPetEventService, ExternalPersonPetEventService>();
+            services.AddTransient<IPersonService, PersonService>();
+            services.AddTransient<IPersonXMLService, PersonXMLService>();
+            services.AddTransient<IPetService, PetService>();
+        }
+
+        private static void AddProcessingServices(IServiceCollection services)
+        {
+            services.AddTransient<IExternalPersonPetProcessingService, ExternalPersonPetProcessingService>();
+            services.AddTransient<IExternalPersonPetEventProcessingService, ExternalPersonPetEventProcessingService>();
+            services.AddTransient<IPersonProcessingService, PersonProcessingService>();
+            services.AddTransient<IPersonXMLProcessingService, PersonXMLProcessingService>();
+            services.AddTransient<IPetProcessingService, PetProcessingService>();
+        }
+
+        private static void AddOrchestrationServices(IServiceCollection services)
+        {
+            services.AddTransient<IExternalPersonPetOrchestrationService, ExternalPersonPetOrchestrationService>();
+            services.AddTransient<IExternalPersonPetEventOrchestrationService, ExternalPersonPetEventOrchestrationService>();
+            services.AddTransient<IPersonPetOrchestrationService, PersonPetOrchestrationService>();
+            services.AddTransient<IPersonOrchestrationService, PersonOrchestrationService>();
+        }
+
+        private static void AddCoordinationServices(IServiceCollection services) =>
+            services.AddTransient<IPersonPetEventCoordinationService, PersonPetEventCoordinationService>();
     }
 }

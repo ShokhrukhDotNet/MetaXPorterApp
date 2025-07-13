@@ -24,4 +24,12 @@
     <PackageReference Include="Xeption" Version="2.8.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Brokers\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Resources\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>
