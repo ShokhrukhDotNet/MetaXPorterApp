@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaXPorterApp.Web", "MetaXPorterApp.Web\MetaXPorterApp.Web.csproj", "{2E820964-1DC2-4E23-9413-E8DC6B07242C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaXPorterApp.Web.Tests.Unit", "MetaXPorterApp.Web.Tests.Unit\MetaXPorterApp.Web.Tests.Unit.csproj", "{AEE3877F-7DD2-463D-AED5-D9D4C28E964E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{2E820964-1DC2-4E23-9413-E8DC6B07242C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E820964-1DC2-4E23-9413-E8DC6B07242C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E820964-1DC2-4E23-9413-E8DC6B07242C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEE3877F-7DD2-463D-AED5-D9D4C28E964E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEE3877F-7DD2-463D-AED5-D9D4C28E964E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEE3877F-7DD2-463D-AED5-D9D4C28E964E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEE3877F-7DD2-463D-AED5-D9D4C28E964E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
