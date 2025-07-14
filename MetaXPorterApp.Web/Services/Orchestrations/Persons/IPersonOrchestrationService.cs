@@ -4,7 +4,9 @@
 //==================================================
 
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using MetaXPorterApp.Web.Models.Foundations.Persons;
 
 namespace MetaXPorterApp.Web.Services.Orchestrations.Persons
 {
@@ -12,5 +14,6 @@ namespace MetaXPorterApp.Web.Services.Orchestrations.Persons
     {
         ValueTask ExportAllPeopleWithPetsToXmlAsync();
         ValueTask<Stream> RetrievePeopleWithPetsXmlFileAsync();
+        IQueryable<Person> RetrieveAllPeopleWithPets();
     }
 }

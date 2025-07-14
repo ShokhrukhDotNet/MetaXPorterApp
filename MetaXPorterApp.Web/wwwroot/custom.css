@@ -1,0 +1,95 @@
+﻿/* All */
+.page-name-personpet{
+    text-align: center;
+}
+
+.status-message {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+/* Upload page */
+.upload-box {
+    position: relative;
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    max-width: 400px;
+    margin: 0 auto 30px auto;
+}
+
+.upload-box:hover {
+    background: #e9ecef;
+    border-color: #0056b3;
+}
+
+.upload-box label {
+    display: inline-block;
+    font-size: 16px;
+    color: #007bff;
+    cursor: pointer;
+}
+
+.upload-box input[type="file"] {
+    display: none;
+}
+
+.download-button {
+    text-align: center;
+}
+
+button.btn-primary {
+    padding: 10px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background 0.3s ease;
+}
+
+button.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Data Page card */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 25px;
+    margin: 20px auto;
+    max-width: 600px;
+    background: #ffffff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card-body {
+    padding: 10px 0;
+}
+
+.card-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 5px;
+    font-size: 15px;
+}

@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MetaXPorterApp.Web.Models.Foundations.Persons;
 using MetaXPorterApp.Web.Services.Processings.Persons;
 using Xeptions;
 
@@ -59,5 +60,8 @@ namespace MetaXPorterApp.Web.Services.Orchestrations.Persons
                     innerException: exception);
             }
         }
+
+        public IQueryable<Person> RetrieveAllPeopleWithPets() =>
+            this.personProcessingService.RetrieveAllPeopleWithPets();
     }
 }

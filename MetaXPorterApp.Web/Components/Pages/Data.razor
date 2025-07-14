@@ -1,0 +1,52 @@
+﻿@page "/data"
+@rendermode InteractiveServer
+
+@using MetaXPorterApp.Web.Models.Foundations.Persons
+@inject HttpClient Http
+
+<h1 class="page-name-personpet">Information about person and pet</h1>
+
+@if (people == null)
+{
+    <p>Loading...</p>
+}
+else if (!people.Any())
+{
+    <p>No data found.</p>
+}
+else
+{
+    @foreach (var person in people)
+    {
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">@person.Name</h5>
+                <p class="card-text">Age: @person.Age</p>
+
+                @if (person.Pets?.Any() == true)
+                {
+                    <h6>Pets:</h6>
+                    <ul>
+                        @foreach (var pet in person.Pets)
+                        {
+                            <li>@pet.Name (@pet.Type)</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p>No pets found.</p>
+                }
+            </div>
+        </div>
+    }
+}
+
+@code {
+    private List<Person> people;
+
+    protected override async Task OnInitializedAsync()
+    {
+        people = await Http.GetFromJsonAsync<List<Person>>("/api/people/get-all");
+    }
+}

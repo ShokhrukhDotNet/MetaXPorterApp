@@ -3,6 +3,8 @@
 // Free To Use For Reliable File Conversion
 //==================================================
 
+using System;
+using System.Net.Http;
 using System.Text.Json.Serialization;
 using MetaXPorterApp.Web.Brokers.Loggings;
 using MetaXPorterApp.Web.Brokers.Queues;
@@ -20,6 +22,7 @@ using MetaXPorterApp.Web.Services.Processings.ExternalPersonPets;
 using MetaXPorterApp.Web.Services.Processings.Persons;
 using MetaXPorterApp.Web.Services.Processings.Pets;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -38,13 +41,20 @@ namespace MetaXPorterApp.Web
             builder.Services.AddControllers().AddJsonOptions(options =>
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
+            builder.Services.AddHttpClient();
+
+            builder.Services.AddScoped<HttpClient>(sp =>
+            {
+                var navigationManager = sp.GetRequiredService<NavigationManager>();
+                return new HttpClient { BaseAddress = new Uri(navigationManager.BaseUri) };
+            });
+
             builder.Services.AddDbContext<StorageBroker>();
             AddBrokers(builder.Services);
             AddFoundationServices(builder.Services);
             AddProcessingServices(builder.Services);
             AddOrchestrationServices(builder.Services);
             AddCoordinationServices(builder.Services);
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -56,8 +66,10 @@ namespace MetaXPorterApp.Web
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseAntiforgery();
             app.MapStaticAssets();
+            app.MapControllers();
 
             app.MapRazorComponents<App>()
                 .AddInteractiveServerRenderMode();
@@ -75,6 +87,7 @@ namespace MetaXPorterApp.Web
 
         private static void AddFoundationServices(IServiceCollection services)
         {
+            services.AddTransient<IExternalPersonPetInputService, ExternalPersonPetInputService>();
             services.AddTransient<IExternalPersonPetService, ExternalPersonPetService>();
             services.AddTransient<IExternalPersonPetEventService, ExternalPersonPetEventService>();
             services.AddTransient<IPersonService, PersonService>();
@@ -84,6 +97,7 @@ namespace MetaXPorterApp.Web
 
         private static void AddProcessingServices(IServiceCollection services)
         {
+            services.AddTransient<IExternalPersonPetInputProcessingService, ExternalPersonPetInputProcessingService>();
             services.AddTransient<IExternalPersonPetProcessingService, ExternalPersonPetProcessingService>();
             services.AddTransient<IExternalPersonPetEventProcessingService, ExternalPersonPetEventProcessingService>();
             services.AddTransient<IPersonProcessingService, PersonProcessingService>();
