@@ -9,8 +9,6 @@
   <ItemGroup>
     <PackageReference Include="EFxceptions" Version="1.0.3" />
     <PackageReference Include="EPPlus" Version="7.0.1" />
-    <PackageReference Include="ExcelDataReader" Version="3.7.0" />
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>
