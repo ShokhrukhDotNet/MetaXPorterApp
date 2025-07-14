@@ -28,7 +28,10 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\custom.css" />
   </ItemGroup>
 
 </Project>

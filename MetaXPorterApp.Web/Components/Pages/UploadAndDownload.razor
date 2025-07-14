@@ -1,0 +1,48 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+@inject HttpClient Http
+@inject IJSRuntime JS
+
+<h1 class="page-name-personpet">Upload and Download</h1>
+
+<div class="upload-box">
+    <InputFile OnChange="HandleFileSelected" />
+    <label>
+        <span>📁 Click or Drag File Here</span>
+        <InputFile OnChange="HandleFileSelected" style="display:none;" />
+    </label>
+</div>
+
+<div class="download-button">
+    <button class="btn btn-primary" @onclick="DownloadXml">Download XML</button>
+</div>
+
+<p class="status-message">@statusMessage</p>
+
+@code {
+    private IBrowserFile selectedFile;
+    private string statusMessage;
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+
+        using var content = new MultipartFormDataContent();
+        var fileContent = new StreamContent(selectedFile.OpenReadStream(10 * 1024 * 1024));
+        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(selectedFile.ContentType);
+
+        content.Add(fileContent, "file", selectedFile.Name);
+
+        var response = await Http.PostAsync("/api/people/upload-and-store", content);
+
+        statusMessage = response.IsSuccessStatusCode
+            ? "✅ Uploaded and Saved!"
+            : $"❌ Error: {response.ReasonPhrase}";
+    }
+
+    private async Task DownloadXml()
+    {
+        await JS.InvokeVoidAsync("open", "/api/people/export/download", "_blank");
+    }
+}

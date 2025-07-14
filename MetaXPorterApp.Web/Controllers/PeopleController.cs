@@ -5,7 +5,9 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using MetaXPorterApp.Web.Models.Foundations.Persons;
 using MetaXPorterApp.Web.Models.Orchestrations.PersonPets;
 using MetaXPorterApp.Web.Services.Coordinations;
 using MetaXPorterApp.Web.Services.Orchestrations.Persons;
@@ -55,6 +57,14 @@ namespace MetaXPorterApp.Web.Controllers
                 await this.personOrchestrationService.RetrievePeopleWithPetsXmlFileAsync();
 
             return File(xmlFileStream, "application/xml", "PeopleWithPets.xml");
+        }
+
+        [HttpGet("get-all")]
+        public ActionResult<List<Person>> GetAllPeopleWithPets()
+        {
+            IQueryable<Person> query = this.personOrchestrationService.RetrieveAllPeopleWithPets();
+            List<Person> people = query.ToList();
+            return Ok(people);
         }
     }
 }
