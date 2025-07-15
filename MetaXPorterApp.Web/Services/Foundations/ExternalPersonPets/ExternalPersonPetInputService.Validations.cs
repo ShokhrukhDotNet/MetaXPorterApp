@@ -21,6 +21,10 @@ namespace MetaXPorterApp.Web.Services.Foundations.ExternalPersonPets
             {
                 throw new EmptyExternalPersonPetInputFileException();
             }
+            if (!file.FileName.EndsWith(".xlsx") && !file.FileName.EndsWith(".xls"))
+            {
+                throw new InvalidExternalPersonPetInputFileTypeException(file.FileName);
+            }
         }
     }
 }

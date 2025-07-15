@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MetaXPorterApp.Web.Models.Foundations.ExternalPersons.Exceptions;
 using MetaXPorterApp.Web.Models.Foundations.Persons;
+using MetaXPorterApp.Web.Models.Foundations.Persons.Exceptions;
 using MetaXPorterApp.Web.Models.Orchestrations.PersonPets;
 using MetaXPorterApp.Web.Services.Coordinations;
 using MetaXPorterApp.Web.Services.Orchestrations.Persons;
@@ -40,31 +42,78 @@ namespace MetaXPorterApp.Web.Controllers
         [HttpPost("upload-and-store")]
         public async ValueTask<ActionResult<List<PersonPet>>> UploadAndStorePeople(IFormFile file)
         {
-            await this.externalPersonPetInputProcessingService.UploadExternalPersonPetsFileAsync(file);
+            try
+            {
+                await this.externalPersonPetInputProcessingService.UploadExternalPersonPetsFileAsync(file);
 
-            List<PersonPet> storedPeople =
-                await this.personPetEventCoordinationService.CoordinateExternalPersonPetsAsync();
+                List<PersonPet> storedPeople =
+                    await this.personPetEventCoordinationService.CoordinateExternalPersonPetsAsync();
 
-            return Ok(storedPeople);
+                return Ok(storedPeople);
+            }
+            catch (NullExternalPersonPetInputFileException nullExternalPersonPetInputFileException)
+            {
+                return BadRequest(new { Error = nullExternalPersonPetInputFileException.Message });
+            }
+            catch (EmptyExternalPersonPetInputFileException emptyExternalPersonPetInputFileException)
+            {
+                return BadRequest(new { Error = emptyExternalPersonPetInputFileException.Message });
+            }
+            catch (InvalidExternalPersonPetInputFileTypeException InputFileTypeException)
+            {
+                return BadRequest(new { Error = InputFileTypeException.Message });
+            }
+            catch (ExternalPersonPetDependencyException externalPersonPetDependencyException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { Error = externalPersonPetDependencyException.Message });
+            }
+            catch (ExternalPersonPetServiceException externalPersonPetServiceException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    new { Error = externalPersonPetServiceException.Message });
+            }
         }
 
         [HttpGet("export/download")]
         public async ValueTask<ActionResult> DownloadPeopleWithPetsXml()
         {
-            await this.personOrchestrationService.ExportAllPeopleWithPetsToXmlAsync();
+            try
+            {
+                await this.personOrchestrationService.ExportAllPeopleWithPetsToXmlAsync();
 
-            Stream xmlFileStream =
-                await this.personOrchestrationService.RetrievePeopleWithPetsXmlFileAsync();
+                Stream xmlFileStream =
+                    await this.personOrchestrationService.RetrievePeopleWithPetsXmlFileAsync();
 
-            return File(xmlFileStream, "application/xml", "PeopleWithPets.xml");
+                return File(xmlFileStream, "application/xml", "PeopleWithPets.xml");
+            }
+            catch (PersonDependencyException personDependencyException)
+            {
+                return InternalServerError(personDependencyException.InnerException);
+            }
+            catch (PersonServiceException personServiceException)
+            {
+                return InternalServerError(personServiceException.InnerException);
+            }
         }
 
         [HttpGet("get-all")]
         public ActionResult<List<Person>> GetAllPeopleWithPets()
         {
-            IQueryable<Person> query = this.personOrchestrationService.RetrieveAllPeopleWithPets();
-            List<Person> people = query.ToList();
-            return Ok(people);
+            try
+            {
+                IQueryable<Person> query = this.personOrchestrationService.RetrieveAllPeopleWithPets();
+                List<Person> people = query.ToList();
+                return Ok(people);
+            }
+            catch (PersonDependencyException personDependencyException)
+            {
+                return InternalServerError(personDependencyException.InnerException);
+            }
+            catch (PersonServiceException personServiceException)
+            {
+                return InternalServerError(personServiceException.InnerException);
+            }
         }
     }
 }
